@@ -4,6 +4,7 @@ import { getBsu } from "../libs/data";
 
 const Dashboard = async () => {
     const data = await getBsu();
+    const totalSaldo = (data ?? []).reduce((acc, item) => acc + (item.Saldo ?? 0), 0);
     return(
         <div className="block ">
             <Sidebar />
@@ -62,19 +63,18 @@ const Dashboard = async () => {
 
                 <div className="flex py-5 justify-start items-center gap-5">
 
-                {(data ?? []).map((item, index) => (
-                 <div key={index}>
+                 <div>
                    <div className=" bg-[#037847] rounded-[10px] flex justify-start p-4 items-center gap-3 w-[369px] py-5">
                         <div className="icon-home">
                             <img src="assets/money.png" className="h-[6em]" alt="home" />
                         </div>
                         <div className="title">
                             <h1 className="text-[#FEB95A]">Total Saldol</h1>
-                            <h2 className="text-white text-3xl font-bold">Rp {item.Saldo}</h2>
+                            <h2 className="text-white text-3xl font-bold">Rp {totalSaldo}</h2>
                         </div>                
                      </div>
                 </div>
-                ))}
+            
                    
                  
 
