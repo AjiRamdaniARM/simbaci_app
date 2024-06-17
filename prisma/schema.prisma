@@ -1,0 +1,204 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    Int     @id @default(autoincrement()) 
+  email String  @unique
+  name  String?
+}
+
+
+model BSU {
+  idBSU    Int     @id @default(autoincrement()) 
+  nama String  @unique
+  alamat  String? 
+  Kelurahan  String?
+  kecamatan  String?
+  SK  Bytes?
+  Saldo  Float?
+  akun_idakun  Int?
+  approver_idapprover  Int?
+}
+
+model nasabah {
+  idnasabah    Int     @id @default(autoincrement()) 
+  nama String?
+  jenisKelamin  String? 
+  NIK  String?
+  alamat  String?
+  kelurahan  Bytes?
+  kecamatan  Float?
+  Saldo  Float?
+  tempatLahir  String?
+  tglLahir DateTime?
+  BSU_idBSU DateTime?
+}
+model jadwal {
+  idjadwal    Int     @id @default(autoincrement()) 
+  hari DateTime?
+  jadwalMulai  DateTime? 
+  jadwalSelesai  DateTime?
+  BSU_idBSU  Int?
+}
+model JenisSampah {
+  idjadwal    Int     @id @default(autoincrement()) 
+  hari DateTime?
+  jadwalMulai  DateTime? 
+  jadwalSelesai  DateTime?
+  BSU_idBSU  Int?
+}
+model Pengurus {
+  idpengurus   Int     @id @default(autoincrement()) 
+  namaPengurus DateTime?
+  jenisKelamin  DateTime? 
+  alamat  String?
+  pekerjaan  String?
+  tempatLahir  String?
+  tglLahir  String?
+  Ktp  Bytes?
+  BSU_idBSU  Int?
+  akun_idakun  Int?
+}
+
+model Admin {
+  idAdmin   Int     @id @default(autoincrement())
+  nama String?
+  jabatan String?
+  akun_idakun  Int?
+}
+
+model DLH {
+   idDlh   Int     @id @default(autoincrement())
+   nama String?
+   jabatan String?
+   akun_idakun  Int?
+}
+model volunteer {
+   idVolunteer   Int     @id @default(autoincrement())
+   nama String?
+   task String?
+   akun_idakun  Int?
+}
+model ESWKA {
+   idPejabat   Int     @id @default(autoincrement())
+   nama String?
+   jabatan String?
+   akun_idakun  Int?
+}
+model HargaSampahBSI {
+   idHargaSampah   Int     @id @default(autoincrement())
+   Harga Float?
+   CreatedAt String?
+   JenisSampah_idProfileSampah  Int?
+}
+model HargaSampahBSU {
+   idHargaSampahBSU   Int     @id @default(autoincrement())
+   Harga Float?
+   CreatedAt String?
+   JenisSampah_idProfileSampah  Int?
+}
+
+enum KondisiBangunan {
+  Bagus
+  Sedang
+  Buruk
+}
+model BSU_has_volunteer {
+   BSU_idBSU   Int     @id @default(autoincrement())
+   volunteer_idvolunteer Int?
+   luasTempat Float?
+   lokasi  String?
+   KondisiBangunan KondisiBangunan?
+   Fasilitas String?
+   dokumentasiKunjungan Bytes?
+}
+model Transaksi {
+   idTransaksi   Int     @id @default(autoincrement())
+   nasabah_idNasabah Int?
+   totalHarga Float?
+   CreatedAt  String?
+}
+model TransaksiDetail {
+   Transaksi_idTransaksi   Int     @id @default(autoincrement())
+   JenisSampah_idProfilSampah Int?
+   Berat Float?
+   HargaTotal  Float?
+}
+model Pembeli {
+   idpembeli   Int     @id @default(autoincrement())
+   nama String?
+   alamat String?
+   noTelp  String?
+   createdAt  DateTime?
+   akun_idakun  Int?
+}
+model Pembayaran {
+   idPembayaran   Int     @id @default(autoincrement())
+   jumlah Decimal?
+   metode_pembayaran String?
+   status_pembayaran  String?
+   tanggal_pembayaran  DateTime?
+}
+enum namaMetodePengiriman {
+  Dijemput
+  Dikirimkan
+}
+enum statusPengiriman {
+  BelumDijemput
+  SudahDijemput
+  BelumDikrim
+  SedangDikrim
+  SudahDikrim
+}
+enum status {
+  berhasil
+  diproses
+  gagal
+}
+model MetodePengiriman {
+   idMetodePengiriman   Int     @id @default(autoincrement())
+   namaMetodePengiriman namaMetodePengiriman?
+   waktuPengiriman DateTime?
+   statusPengiriman  statusPengiriman?
+   alamatPengiriman  String?
+}
+model Pesanan {
+   idpesanan   Int     @id @default(autoincrement())
+   idpembeli Int?
+   totalHargaKeseluruhan Float?
+   status  status?
+   tanggalPembuatan  DateTime?
+   Pembayaran_idPembayaran  Int?
+   MetodePengiriman_idMetodePengiriman  Int?
+}
+model kategoriProduk {
+   idkategoriProduk   Int     @id @default(autoincrement())
+   namaKategori String?
+}
+model Produk {
+   idProduk   Int     @id @default(autoincrement())
+   nama_produk String?
+   Harga Float?
+   kuantitas Float?
+}
+model detailPesanan {
+   pesanan_idpesanan   Int     @id @default(autoincrement())
+   Produk_idProduk Int?
+   kuantitas Float?
+   totalHarga Float? 
+   diskon Float? 
+}
+
+
